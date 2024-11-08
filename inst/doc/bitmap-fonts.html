@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Using bitmap fonts</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Using bitmap fonts</h1>
+
+
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(lofifonts)</span></code></pre></div>
+<div id="bitmap-font-included-fonts" class="section level2">
+<h2>Bitmap font: included fonts</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">get_lofi_names</span>(<span class="st">&#39;bitmap&#39;</span>)</span></code></pre></div>
+<pre><code>#&gt;  [1] &quot;spleen-12x24&quot;  &quot;spleen-16x32&quot;  &quot;spleen-32x64&quot;  &quot;spleen-5x8&quot;   
+#&gt;  [5] &quot;spleen-6x12&quot;   &quot;spleen-8x16&quot;   &quot;tamzen10x20b&quot;  &quot;tamzen10x20r&quot; 
+#&gt;  [9] &quot;tamzen5x9b&quot;    &quot;tamzen5x9r&quot;    &quot;tamzen6x12b&quot;   &quot;tamzen6x12r&quot;  
+#&gt; [13] &quot;tamzen7x13b&quot;   &quot;tamzen7x13r&quot;   &quot;tamzen7x14b&quot;   &quot;tamzen7x14r&quot;  
+#&gt; [17] &quot;tamzen8x15b&quot;   &quot;tamzen8x15r&quot;   &quot;tamzen8x16b&quot;   &quot;tamzen8x16r&quot;  
+#&gt; [21] &quot;unifont&quot;       &quot;unscii-8&quot;      &quot;unscii-8-thin&quot;</code></pre>
+<table>
+<colgroup>
+<col width="8%" />
+<col width="19%" />
+<col width="34%" />
+<col width="25%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Sizes</th>
+<th>Unicode?</th>
+<th># glyphs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bitmap</td>
+<td>Spleen</td>
+<td>5x8, 6x12, 8x16, 12x24, 16x32</td>
+<td>Some</td>
+<td>450-1000</td>
+</tr>
+<tr>
+<td>Bitmap</td>
+<td>Unifont</td>
+<td>16x16</td>
+<td>Yes. Plane 0, 1</td>
+<td>113446</td>
+</tr>
+<tr>
+<td>Bitmap</td>
+<td>Unscii</td>
+<td>8x8, 8x16</td>
+<td>Some</td>
+<td>3240</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="bitmap-font-functions" class="section level2">
+<h2>Bitmap font functions</h2>
+<ul>
+<li><code>bitmap_text_coords()</code> returns a data.frame of pixel
+locations</li>
+<li><code>bitmap_text_matrix()</code> returns a binary matrix with pixel
+locations set to 1</li>
+<li><code>bitmap_text_raster()</code> returns a raster image of the
+text</li>
+</ul>
+</div>
+<div id="bitmap-font-rendering-text" class="section level2">
+<h2>Bitmap font: Rendering text</h2>
+<p>Text may be rendered with a bitmap font to</p>
+<ol style="list-style-type: decimal">
+<li>A data.frame of pixel locations</li>
+<li>A binary matrix of pixel locations</li>
+<li>A simple <code>raster</code> object</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">library</span>(lofifonts)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">bitmap_text_coords</span>(<span class="st">&quot;Hello&quot;</span>, <span class="at">font =</span> <span class="st">&#39;unifont&#39;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
+<pre><code>#&gt;      char_idx codepoint x  y line x0 y0
+#&gt; 2524        1        72 7 12    0  7 12
+#&gt; 2525        1        72 2 12    0  2 12
+#&gt; 2526        1        72 7 11    0  7 11
+#&gt; 2527        1        72 2 11    0  2 11
+#&gt; 2528        1        72 7 10    0  7 10
+#&gt; 2529        1        72 2 10    0  2 10</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">bitmap_text_raster</span>(<span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;unifont&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
+<p><img role="img" src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="bitmap-font-bespoke-pixel-rendering" class="section level2">
+<h2>Bitmap font: Bespoke pixel rendering</h2>
+<p>This is an example of bespoke rendering of the pixel data for an
+example string.</p>
+<p>Each pixel in the <code>coords</code> data.frame has an
+<code>x</code> and <code>y</code> coordinates, and to render this font,
+a small square will be drawn for each pixel.</p>
+<p>A gap will be left between the rectangels to highlight the pixelated
+origin of the text.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">library</span>(grid)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">bitmap_text_coords</span>(<span class="st">&quot;Hello</span><span class="sc">\n</span><span class="st">#RStats&quot;</span>, <span class="st">&quot;spleen-6x12&quot;</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="fu">head</span>(coords)</span></code></pre></div>
+<pre><code>#&gt;     char_idx codepoint x  y line x0 y0
+#&gt; 516        1        72 5 23    0  5 11
+#&gt; 517        1        72 1 23    0  1 11
+#&gt; 518        1        72 5 22    0  5 10
+#&gt; 519        1        72 1 22    0  1 10
+#&gt; 520        1        72 5 21    0  5  9
+#&gt; 521        1        72 1 21    0  1  9</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">grid.newpage</span>()</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="fu">grid.rect</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  <span class="at">x =</span> coords<span class="sc">$</span>x <span class="sc">*</span> <span class="dv">4</span>, </span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="at">y =</span> coords<span class="sc">$</span>y <span class="sc">*</span> <span class="dv">4</span>, </span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>  <span class="at">width  =</span> <span class="dv">3</span>, </span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>  <span class="at">height =</span> <span class="dv">3</span>, </span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  <span class="at">default.units =</span> <span class="st">&#39;mm&#39;</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>  <span class="at">gp =</span> <span class="fu">gpar</span>(<span class="at">fill =</span> <span class="fu">rainbow</span>(<span class="fu">nrow</span>(coords)), <span class="at">col =</span> <span class="cn">NA</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>)</span></code></pre></div>
+<p><img role="img" src="data:image/png;base64,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" /><!-- --></p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
